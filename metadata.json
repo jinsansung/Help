@@ -1,0 +1,5 @@
+{
+  "name": "회사에 요청하기",
+  "description": "A streamlined internal application for employees to submit various requests like parking permits or visitor registrations. Administrators can dynamically create and manage forms.",
+  "requestFramePermissions": []
+}
