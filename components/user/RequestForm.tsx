@@ -14,7 +14,7 @@ interface RequestFormProps {
 const WEBHOOK_URL = 'https://agit.in/webhook/fb2d4ac7-bda0-418f-9947-e5ce1dbe965a';
 
 /** 구글시트 Web App 엔드포인트 (아래 “앱스 스크립트” 섹션 코드 배포 후 URL로 교체) */
-const SHEETS_WEBHOOK_URL = process.env.NEXT_PUBLIC_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbw893VC0f0fXf9-7jlP2es_NH3Bz9znM2tT--KSD5EnxMD4JEisCYtSbsDMC7Uu6fkC/exec';
+const SHEETS_WEBHOOK_URL = process.env.NEXT_PUBLIC_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbyqsVqcqnzbyHcIEfwl-v_QMJzev-ZOSSjBW2UCjWX0ntS-yT0TQmK0GY4rfToA_gM_/exec';
 
 const renderField = (
   field: FormField,
@@ -207,13 +207,16 @@ const RequestForm: React.FC<RequestFormProps> = ({ formId, forms, onBack }) => {
 
   const sendToSheets = async () => {
     const sheetPayload = buildSheetsPayloadIfNeeded();
-    if (!sheetPayload) return; // 대상 아님
+    if (!sheetPayload) return;
+
+    const form = new URLSearchParams();
+    form.set('payload', JSON.stringify(sheetPayload)); // JSON을 문자열로 싣기
 
     // Apps Script(Web App) 쪽에서 JSON 받도록 구현
     await fetch(SHEETS_WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sheetPayload),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: form.toString(),
     });
     // 실패해도 UI는 막지 않기 때문에 여기서는 throw 안 함(네트워크 에러면 상위에서 잡힘)
   };
