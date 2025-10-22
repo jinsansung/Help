@@ -196,7 +196,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ formId, forms, onBack }) => {
     const payload = buildAgitPayload();
     const response = await fetch(WEBHOOK_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload),
     });
     if (!response.ok) {
